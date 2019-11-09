@@ -1,5 +1,5 @@
 {
-  "name": "state-io",
+  "name": "stadux",
   "version": "0.0.0-development",
   "description": "A state manager tool",
   "main": "lib/index.js",
