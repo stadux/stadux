@@ -23,13 +23,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/futantan/stateIO.git"
+    "url": "https://github.com/futantan/stadux.git"
   },
   "keywords": [],
   "author": "futantan",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/futantan/stateIO/issues"
+    "url": "https://github.com/futantan/stadux/issues"
   },
   "jest": {
     "transform": {
@@ -50,7 +50,7 @@
       }
     }
   },
-  "homepage": "https://github.com/futantan/stateIO/",
+  "homepage": "https://github.com/futantan/stadux/",
   "devDependencies": {
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.5",
