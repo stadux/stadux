@@ -25,8 +25,7 @@
     "type": "git",
     "url": ""
   },
-  "keywords": [
-  ],
+  "keywords": [],
   "author": "futantan",
   "license": "ISC",
   "bugs": {
@@ -44,7 +43,12 @@
       "jsx",
       "json",
       "node"
-    ]
+    ],
+    "globals": {
+      "ts-jest": {
+        "diagnostics": false
+      }
+    }
   },
   "homepage": "",
   "devDependencies": {
@@ -70,5 +74,10 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "dependencies": {
+    "effector": "^20.6.0",
+    "node-fetch": "^2.6.0",
+    "rxjs": "^6.5.3"
   }
 }
