@@ -36,3 +36,22 @@ test('should be able to unwatch', () => {
   expect(spy).toHaveBeenNthCalledWith(1, 1)
   expect(spy).not.toHaveBeenNthCalledWith(2, 2)
 })
+
+test('should be able to receive params from event', () => {
+  const spy = jest.fn()
+  type Todo = { name: string }
+  const addTodo = createEvent<Todo>('add todo')
+  const todoList = createStore<Todo[]>([]).on(addTodo, (state, newTodo) =>
+    state.concat(newTodo)
+  )
+  todoList.watch(spy)
+
+  addTodo({ name: 'shopping' })
+  addTodo({ name: 'fishing' })
+
+  expect(spy).toHaveBeenNthCalledWith(1, [{ name: 'shopping' }])
+  expect(spy).toHaveBeenNthCalledWith(2, [
+    { name: 'shopping' },
+    { name: 'fishing' },
+  ])
+})

@@ -6,9 +6,12 @@ export const createStore = <T>(defaultState: T) => {
   const subject = new Subject<T>()
 
   return {
-    on(event: Event, cb: (x: T) => T) {
+    on<Payload = void>(
+      event: Event<Payload>,
+      cb: (x: T, payload: Payload) => T
+    ) {
       event.triggers.push(() => {
-        state = cb(state)
+        state = cb(state, event.currentPayload as Payload)
         subject.next(state)
       })
       return this
