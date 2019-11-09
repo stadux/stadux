@@ -1,7 +1,7 @@
 {
-  "name": "xxx",
+  "name": "stateIO",
   "version": "0.0.0-development",
-  "description": "",
+  "description": "A state manager tool",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
@@ -23,13 +23,13 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/futantan/stateIO.git"
   },
   "keywords": [],
   "author": "futantan",
   "license": "ISC",
   "bugs": {
-    "url": ""
+    "url": "https://github.com/futantan/stateIO/issues"
   },
   "jest": {
     "transform": {
@@ -50,7 +50,7 @@
       }
     }
   },
-  "homepage": "",
+  "homepage": "https://github.com/futantan/stateIO/",
   "devDependencies": {
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.5",
