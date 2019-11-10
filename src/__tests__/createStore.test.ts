@@ -55,3 +55,20 @@ test('should be able to receive params from event', () => {
     { name: 'fishing' },
   ])
 })
+
+test('should be able to get state', () => {
+  type Todo = { name: string }
+  const addTodo = createEvent<Todo>('add todo')
+  const todoList = createStore<Todo[]>([]).on(addTodo, (state, newTodo) =>
+    state.concat(newTodo)
+  )
+
+  addTodo({ name: 'shopping' })
+  expect(todoList.getState()).toEqual([{ name: 'shopping' }])
+
+  addTodo({ name: 'fishing' })
+  expect(todoList.getState()).toEqual([
+    { name: 'shopping' },
+    { name: 'fishing' },
+  ])
+})

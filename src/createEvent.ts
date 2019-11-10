@@ -1,5 +1,12 @@
 import { noop } from './utils'
-import { Event } from './type'
+
+export interface Event<Payload = void> {
+  (v: Payload): void
+  eventName: string
+  watch: (cb: (v: Payload) => void) => () => void
+  triggers: Array<(v: Payload) => void>
+  currentPayload?: Payload
+}
 
 export const createEvent = <Payload = void>(name?: string): Event<Payload> => {
   let watcher: (v: Payload) => void = noop

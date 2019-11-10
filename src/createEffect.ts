@@ -4,7 +4,7 @@ import { createEvent } from './createEvent'
 type Handler<Params, Done> = (params: Params) => Promise<Done>
 type Watcher<Params> = (params: Params) => void
 
-export const createEffect = <Params, Done, Fail = Error>() => {
+export const createEffect = <Params = void, Done = {}, Fail = Error>() => {
   let handler: Handler<Params, Done>
   let watcher: Watcher<Params> = noop
   return {
