@@ -16,11 +16,13 @@ test('should be able to create store', () => {
   decrement()
   decrement()
   resetCounter()
+  increment()
 
   expect(spy).toHaveBeenNthCalledWith(1, 1)
   expect(spy).toHaveBeenNthCalledWith(2, 0)
   expect(spy).toHaveBeenNthCalledWith(3, -1)
   expect(spy).toHaveBeenNthCalledWith(4, 0)
+  expect(spy).toHaveBeenNthCalledWith(5, 1)
 })
 
 test('should be able to unwatch', () => {
