@@ -9,18 +9,18 @@ export interface Event<Payload = void> {
 }
 
 export const createEvent = <Payload = void>(name?: string): Event<Payload> => {
-  let watcher: (v: Payload) => void = noop
+  let watchers: Array<(v: Payload) => void> = []
   const instance: Event<Payload> = (v: Payload) => {
     instance.currentPayload = v
-    watcher(v)
+    watchers.forEach(cb => cb(v))
     instance.triggers.forEach(cb => cb(v))
   }
   instance.eventName = name || ''
   instance.triggers = [] as Array<(v: Payload) => void>
   instance.watch = cb => {
-    watcher = cb
+    watchers.push(cb)
     return () => {
-      watcher = noop
+      watchers = watchers.filter(v => v !== cb)
     }
   }
   return instance
