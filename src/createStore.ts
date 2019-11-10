@@ -20,20 +20,18 @@ export const createStore = <T>(defaultState: T): Store<T> => {
       event: Event<Payload>,
       cb: (x: T, payload: Payload) => T
     ) {
-      event.triggers.push(() => {
-        state = cb(state, event.currentPayload as Payload)
+      event.watch(payload => {
+        state = cb(state, payload)
         subject.next(state)
       })
       return this
     },
 
-    reset(event: Event) {
-      event.triggers = [
-        () => {
-          state = defaultState
-          subject.next(state)
-        },
-      ]
+    reset<Payload = void>(event: Event<Payload>) {
+      event.watch(_ => {
+        state = defaultState
+        subject.next(state)
+      })
       return this
     },
 
