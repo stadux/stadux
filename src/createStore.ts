@@ -1,4 +1,3 @@
-import { Subject } from 'rxjs'
 import { Event } from './createEvent'
 
 export interface Store<T> {
@@ -13,7 +12,7 @@ export interface Store<T> {
 
 export const createStore = <T>(defaultState: T): Store<T> => {
   let state = defaultState
-  const subject = new Subject<T>()
+  let watchers: Array<(store: T) => void> = []
 
   return {
     on<Payload = void>(
@@ -22,7 +21,7 @@ export const createStore = <T>(defaultState: T): Store<T> => {
     ) {
       event.watch(payload => {
         state = cb(state, payload)
-        subject.next(state)
+        watchers.forEach(v => v(state))
       })
       return this
     },
@@ -30,14 +29,16 @@ export const createStore = <T>(defaultState: T): Store<T> => {
     reset<Payload = void>(event: Event<Payload>) {
       event.watch(_ => {
         state = defaultState
-        subject.next(state)
+        watchers.forEach(v => v(state))
       })
       return this
     },
 
     watch(cb: (store: T) => void) {
-      const subscription = subject.subscribe(cb)
-      return () => subscription.unsubscribe()
+      watchers.push(cb)
+      return () => {
+        watchers = watchers.filter(v => v !== cb)
+      }
     },
 
     getState() {

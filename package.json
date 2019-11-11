@@ -76,7 +76,5 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "dependencies": {
-    "rxjs": "^6.5.3"
-  }
+  "dependencies": {}
 }
