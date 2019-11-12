@@ -53,3 +53,11 @@ test('should be able to get data from effect', async () => {
   const user = await fetchUser({ id: '1' })
   expect(user).toEqual({ name: 'alice' })
 })
+
+test('should be able to watch effect', async () => {
+  const spy = jest.fn()
+  fetchUser.use(() => Promise.resolve({ name: 'alice' }))
+  fetchUser.watch(spy)
+  await fetchUser({ id: '1' })
+  expect(spy).toBeCalled()
+})
