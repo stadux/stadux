@@ -13,6 +13,10 @@ export interface Store<T> {
 export const createStore = <T>(defaultState: T): Store<T> => {
   let state = defaultState
   let watchers: Array<(store: T) => void> = []
+  const setState = (newState: T) => {
+    state = newState
+    watchers.forEach(cb => cb(newState))
+  }
 
   return {
     on<Payload = void>(
@@ -20,16 +24,14 @@ export const createStore = <T>(defaultState: T): Store<T> => {
       cb: (x: T, payload: Payload) => T
     ) {
       event.watch(payload => {
-        state = cb(state, payload)
-        watchers.forEach(v => v(state))
+        setState(cb(state, payload))
       })
       return this
     },
 
     reset<Payload = void>(event: Event<Payload>) {
       event.watch(_ => {
-        state = defaultState
-        watchers.forEach(v => v(state))
+        setState(defaultState)
       })
       return this
     },
