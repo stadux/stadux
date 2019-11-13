@@ -1,13 +1,17 @@
 import { Event } from './createEvent'
 
-export interface Store<T> {
+export interface BaseStore<T> {
+  getState(): T
+  watch(cb: (store: T) => void): () => void
+}
+
+export interface Store<T> extends BaseStore<T> {
   on<Payload = void>(
     event: Event<Payload>,
     cb: (x: T, payload: Payload) => T
   ): Store<T>
   reset(event: Event<void>): Store<T>
-  watch(cb: (store: T) => void): () => void
-  getState(): T
+  select<U>(project: (state: T) => U): BaseStore<U>
 }
 
 export const createStore = <T>(defaultState: T): Store<T> => {
@@ -45,6 +49,19 @@ export const createStore = <T>(defaultState: T): Store<T> => {
 
     getState() {
       return state
+    },
+
+    select<U>(project: (state: T) => U) {
+      return {
+        watch: (cb: (store: U) => void) => {
+          const selectCallback = (v: T) => cb(project(v))
+          watchers.push(selectCallback)
+          return () => {
+            watchers = watchers.filter(v => v !== selectCallback)
+          }
+        },
+        getState: () => project(this.getState()),
+      }
     },
   }
 }

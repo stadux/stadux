@@ -74,3 +74,43 @@ test('should be able to get state', () => {
     { name: 'fishing' },
   ])
 })
+
+test('should be able to select state', () => {
+  type Todo = { name: string }
+  const addTodo = createEvent<Todo>('add todo')
+  const todoList = createStore<Todo[]>([]).on(addTodo, (state, newTodo) =>
+    state.concat(newTodo)
+  )
+  const selectedStore = todoList.select(todos =>
+    todos.map(v => v.name).join(', ')
+  )
+
+  addTodo({ name: 'shopping' })
+  expect(selectedStore.getState()).toEqual('shopping')
+
+  addTodo({ name: 'fishing' })
+  expect(selectedStore.getState()).toEqual('shopping, fishing')
+})
+
+test('should be able to select state and watch changes', () => {
+  type Todo = { name: string }
+  const addTodo = createEvent<Todo>('add todo')
+  const todoList = createStore<Todo[]>([]).on(addTodo, (state, newTodo) =>
+    state.concat(newTodo)
+  )
+  const selectedStore = todoList.select(todos =>
+    todos.map(v => v.name).join(', ')
+  )
+
+  const spy = jest.fn()
+  const unwatch = selectedStore.watch(spy)
+  addTodo({ name: 'shopping' })
+  expect(spy).toHaveBeenLastCalledWith('shopping')
+
+  addTodo({ name: 'fishing' })
+  expect(spy).toHaveBeenLastCalledWith('shopping, fishing')
+
+  unwatch()
+  addTodo({ name: 'sleeping' })
+  expect(spy).not.toHaveBeenLastCalledWith('shopping, fishing, sleeping')
+})
