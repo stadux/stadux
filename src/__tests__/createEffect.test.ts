@@ -61,3 +61,21 @@ test('should be able to watch effect', async () => {
   await fetchUser({ id: '1' })
   expect(spy).toBeCalled()
 })
+
+test('should be able to create effect with parameter', async () => {
+  const fetch = createEffect(({ id }: Params) =>
+    axios
+      .get(`https://jsonplaceholder.typicode.com/users/${id}`)
+      .then<Resp>(v => v.data)
+  )
+  mockedAxios.get.mockResolvedValue({ data: { name: 'ABC' } })
+  const spy = jest.fn()
+  fetch.done.watch(spy)
+
+  await fetch({ id: '1' })
+
+  expect(spy).toHaveBeenCalledWith({
+    result: { name: 'ABC' },
+    params: { id: '1' },
+  })
+})
