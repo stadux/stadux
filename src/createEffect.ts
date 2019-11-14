@@ -13,12 +13,9 @@ export interface Effect<Params, Done, Fail> {
 }
 
 export const createEffect = <Params = void, Done = void, Fail = Error>(
-  effector?: Handler<Params, Done>
+  effector: Handler<Params, Done>
 ) => {
-  let handler: Handler<Params, Done>
-  if (effector) {
-    handler = effector
-  }
+  let handler: Handler<Params, Done> = effector
   let watcher: Watcher<Params> = noop
 
   const effect: Effect<Params, Done, Fail> = (params: Params) => {
