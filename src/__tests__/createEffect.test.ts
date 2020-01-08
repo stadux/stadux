@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { createEffect } from '../createEffect'
+import { noop } from '../utils'
 
 jest.mock('axios')
 const mockedAxios = axios as jest.Mocked<typeof axios>
@@ -30,11 +31,17 @@ test('should be able to watch fail', async () => {
   const spy = jest.fn()
   fetchUser.fail.watch(spy)
 
-  await fetchUser({ id: '1' })
+  await fetchUser({ id: '1' }).catch(noop)
   expect(spy).toHaveBeenCalledWith({
     error: 'this is error msg',
     params: { id: '1' },
   })
+})
+
+test('should be able to catch fail', async () => {
+  mockedAxios.get.mockRejectedValue('this is error msg')
+
+  await expect(fetchUser({ id: '1' })).rejects.toEqual('this is error msg')
 })
 
 test('should be able to use use to change implementation', async () => {
