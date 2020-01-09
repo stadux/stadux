@@ -27,7 +27,7 @@ export const createEffect = <Params = void, Done = void, Fail = Error>(
       })
       .catch(error => {
         effect.fail({ error, params })
-        return error
+        return Promise.reject(error)
       })
   }
   effect.watch = (cb: Watcher<Params>) => {
