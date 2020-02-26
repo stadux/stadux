@@ -7,13 +7,23 @@ const mockedAxios = axios as jest.Mocked<typeof axios>
 
 type Params = { id: string }
 type Resp = { name: string }
-const fetchUser = createEffect<Params, Resp>().use(({ id }) =>
+const fetchUser = createEffect<Params, Resp>(({ id }) =>
   axios
     .get(`https://jsonplaceholder.typicode.com/users/${id}`)
     .then(v => v.data)
 )
 
 beforeEach(() => jest.resetAllMocks())
+
+test('should be able to watch start', () => {
+  mockedAxios.get.mockResolvedValue({ data: { name: 'ABC' } })
+  const spy = jest.fn()
+  fetchUser.start.watch(spy)
+  fetchUser({ id: '1' })
+  expect(spy).toHaveBeenCalledWith({
+    params: { id: '1' },
+  })
+})
 
 test('should be able to watch done', async () => {
   mockedAxios.get.mockResolvedValue({ data: { name: 'ABC' } })
