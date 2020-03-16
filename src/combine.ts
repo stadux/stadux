@@ -7,10 +7,8 @@ export const combine = <T, K extends keyof T>(
   const keys = Object.keys(combined) as K[]
   const stores = Object.values(combined) as Store<T[K]>[]
 
-  const defaultState = keys.reduce(
-    (acc, k) => ({ ...acc, [k]: combined[k].getState() }),
-    {} as T
-  )
+  const defaultState = {} as T
+  stores.forEach((v, i) => (defaultState[keys[i]] = v.getState()))
   const store = createStore<T>(defaultState)
 
   const partialEvent = createEvent<[K, T[K]]>()
