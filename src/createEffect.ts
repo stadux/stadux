@@ -10,7 +10,7 @@ export interface Effect<Params, Done, Fail> {
   start: Event<{ params: Params }>
   done: Event<{ result: Done; params: Params }>
   fail: Event<{ error: Fail; params: Params }>
-  use(handler: Handler<Params, Done>): Effect<Params, Done, Fail>
+  adopt(handler: Handler<Params, Done>): Effect<Params, Done, Fail>
 }
 
 export const createEffect = <Params = void, Done = void, Fail = Error>(
@@ -38,7 +38,7 @@ export const createEffect = <Params = void, Done = void, Fail = Error>(
   effect.start = createEvent<{ params: Params }>()
   effect.done = createEvent<{ result: Done; params: Params }>()
   effect.fail = createEvent<{ error: Fail; params: Params }>()
-  effect.use = (effector: Handler<Params, Done>) => {
+  effect.adopt = (effector: Handler<Params, Done>) => {
     handler = effector
     return effect
   }
