@@ -21,7 +21,7 @@ A state manager that is highly inspired by [Effector](https://github.com/zerobia
 
 ## Introduction
 
-Stadux is an multi-store state manager for Javascript apps **(React/React Native/Vue/Node.js)**, that allows you to manage data in complex applications without the risk of inflating the monolithic central store, with clear control flow, good type support and high capacity API. Stadux supports **TypeScript** _out of the box_.
+Stadux is an multi-store state manager for Javascript apps **(React/React Native/Node.js)**, that allows you to manage data in complex applications without the risk of inflating the monolithic central store, with clear control flow, good type support and high capacity API. Stadux supports **TypeScript** _out of the box_.
 
 ### Core concepts
 
@@ -30,6 +30,14 @@ Stadux is an multi-store state manager for Javascript apps **(React/React Native
 - **Effect** Side effect is hard to manage and effect will fire event when side effect start, done or failed.
 
 That's all the connect that you need to know!
+
+### Installation
+
+```sh
+npm install --save stadux
+# or
+yarn add stadux
+```
 
 ## API
 
@@ -106,4 +114,28 @@ const todoList = createStore<{
 // when fetch todo list succeed, it will fire `fetchTodoList.done` event with respond value
 // when fetch todo list failed, it will fire `fetchTodoList.fail` event with error reason
 fetchTodoList({ token: '' })
+```
+
+## Use in React
+```sh
+npm install --save stadux-react
+# or
+yarn add stadux-react
+```
+
+```typescript
+const increment = createEvent()
+const decrement = createEvent()
+const resetCounter = createEvent()
+const counter = createStore(0)
+  .on(increment, state => state + 1)
+  .on(decrement, state => state - 1)
+  .reset(resetCounter)
+
+const CountComponent = () => {
+  const count = useStore(counter)
+
+  return <div>Count is: {count}</div>
+}
+const { result } = renderHook(() => useStore(counter))
 ```
