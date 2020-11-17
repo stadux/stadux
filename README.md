@@ -137,5 +137,4 @@ const CountComponent = () => {
 
   return <div>Count is: {count}</div>
 }
-const { result } = renderHook(() => useStore(counter))
 ```
